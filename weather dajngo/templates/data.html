@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/page_data.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="ps_content">
+        <div class="forms">
+            <form class="forma_f" action="">
+                <table>
+                    <tr>
+                        <td class="white">City:</td>
+                        <td>
+                            <select class="form-control" name="city" id="city">
+                                <option value="">all city</option>
+                                {% for i in  city %}
+                                    {% if select_city == i.name %}
+                                        <option value="{{ i.name }}" selected>{{ i.name }}</option>
+                                    {% else %}
+                                        <option value="{{ i.name }}">{{ i.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="white">Date form:</td>
+                        <td>
+                            <input class="form-control" type="date" name="date_form"
+                                   value="{% for key,value in request.GET.items %}{% if key == 'date_form' %}{{ value }}{% endif %}{% endfor %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="white">Date to:</td>
+                        <td>
+                            <input class="form-control" type="date" name="date_to"
+                                   value="{% for key,value in request.GET.items %}{% if key == 'date_to' %}{{ value }}{% endif %}{% endfor %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input class="btn btn-primary" type="submit" value="seach">
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+        <div class="table_data">
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <td>Name city</td>
+                    <td>Temp</td>
+                    <td>Temp min</td>
+                    <td>Temp max</td>
+                    <td>Pressure</td>
+                    <td>Humidity</td>
+                    <td>Wind_speed</td>
+                    <td>Wind_deg</td>
+                    <td>Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in data.object_list %}
+
+                    <tr {% if this_data == i.id %} class="red" {% endif %}>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.temp }}°</td>
+                        <td>{{ i.temp_min }}°</td>
+                        <td>{{ i.temp_max }}°</td>
+                        <td>{{ i.pressure }}</td>
+                        <td>{{ i.humidity }}</td>
+                        <td>{{ i.wind_speed }}</td>
+                        <td>{{ i.wind_deg }}</td>
+                        <td>{{ i.date|date:'d-m-Y' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ul class="pagination">
+        {% if data.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">&laquo; Первый</a></li>
+            <li class="page-item"><a class="page-link"  href="?page={{ data.previous_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Предыдущий</a></li>
+        {% endif %}
+        <li class="page-item"> <div class="page-link">Страница {{ data.number }} - {{data.paginator.num_pages }}.</div> </li>
+        {% if data.has_next %}
+            <li class="page-item"> <a class="page-link" href="?page={{ data.next_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Следующий</a> </li>
+            <li class="page-item"> <a class="page-link" href="?page={{ data.paginator.num_pages }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Последний &raquo;</a> </li>
+        {% endif %}
+    </ul>
+{% endblock %}

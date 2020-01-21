@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/page_st.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="card mx-auto">
+        <img class="card-img" src="{% static 'bg.jpg' %}" alt="...">
+        <div class="card-img-overlay text-white">
+            <h4 class="card-title">Enter city names</h4>
+                <form action="" method="post" class="input_form">
+                    {% csrf_token %}
+                        <input class="form-control" type="text" name="city" placeholder="You city name" required>
+                        <input class="btn btn-success" type="submit" value="seach">
+                </form>
+            {% if err %}
+                <div><p class="err">{{ err }}</p></div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+.content {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card{
+    max-width: 390px;
+}
+.input_form{
+    display: flex;
+    width: 100%;
+
+}
+input{
+    margin: 2px;
+}
